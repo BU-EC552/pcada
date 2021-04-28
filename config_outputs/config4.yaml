@@ -1,0 +1,66 @@
+addgene-cost: 75
+dnasu-cost: 99
+fragments-max-count: 7
+fragments-max-junction-hairpin: 45
+fragments-max-junction-length: 150
+fragments-min-junction-length: 16
+gibson-assembly-cost: 12.67
+gibson-assembly-time-cost: 26
+igem-cost: 0
+pcr-bp-cost: 0.65
+pcr-buffer-length: 21
+pcr-min-length: 40
+pcr-primer-max-ectopic-tm: 48
+pcr-primer-max-embed-length: 21
+pcr-primer-max-pair-penalty: 32
+pcr-rxn-cost: 0.24
+pcr-time-cost: 51
+synthetic-max-length: 2800
+synthetic-min-length: 130
+synthetic-fragment-cost:
+  250:
+    fixed: True
+    cost: 75
+  500:
+    fixed: True
+    cost: 90
+  750:
+    fixed: True
+    cost: 120
+  1000:
+    fixed: True
+    cost: 155
+  1250:
+    fixed: True
+    cost: 195
+  1500:
+    fixed: True
+    cost: 230
+  1750:
+    fixed: True
+    cost: 300
+  2000:
+    fixed: True
+    cost: 300
+  2250:
+    fixed: True
+    cost: 370
+  2500:
+    fixed: True
+    cost: 420
+  2750:
+    fixed: True
+    cost: 490
+  3000:
+    fixed: True
+    cost: 560
+synthetic-plasmid-cost:
+  500:
+    fixed: True
+    cost: 180.0
+  3000:
+    fixed: False
+    cost: 0.3
+  30000:
+    fixed: False
+    cost: 0.52

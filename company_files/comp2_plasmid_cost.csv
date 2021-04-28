@@ -1,0 +1,4 @@
+plasmid-cost,fixed,cost
+500,TRUE,150
+3000,FALSE,0.32
+30000,FALSE,0.62
