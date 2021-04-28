@@ -33,7 +33,16 @@ Once all of the files are in the proper location, execute the following compile 
 g++ pcada_gui.cpp -o app -lsfml-graphics -lsfml-window -lsfml-system
 ```
 
-And the application "app" should compile correctly.  Then, just run:
+And the application "app" should compile correctly.  Now, with the PCADA application built, make sure to start the 
+local company server by running:
+
+```
+python company_server.py
+```
+
+This will start the local server used to simulate the API calls to participating companies.
+
+Finally, in a new window, run:
 
 ```
 ./app
