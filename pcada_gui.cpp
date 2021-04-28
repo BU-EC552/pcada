@@ -14,6 +14,7 @@ using std::endl;
 
 int main() 
 {
+    // DECLARE ALL OF THE RECTANGULAR INPUT BOXES
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "PCADA");
 	sf::RectangleShape Addgene(sf::Vector2f(125.f, 50.f));
 	Addgene.setFillColor(sf::Color::Blue);
@@ -35,13 +36,10 @@ int main()
 	fafsa_filebox.setFillColor(sf::Color::White);
 	fafsa_filebox.setPosition(300, 200);
 
-    /*sf::RectangleShape submitbox(sf::Vector2f(450.f, 250.f));
-    submitbox.setFillColor(sf::Color::White);
-    submitbox.setPosition(350, 350);*/
-
 	sf::Font font;
 	font.loadFromFile("/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf");
 
+    // DECLARE THE TEXT BOXES
     sf::Text title;
     title.setFont(font);
     title.setString("PCADA");
@@ -88,6 +86,8 @@ int main()
 
     string selectedDB = "addgene";
     window.setFramerateLimit(30);
+
+    // While the program is still running
     while (window.isOpen()) 
     {
         sf::Event event;
@@ -95,6 +95,8 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            
+            // If the user starts typing, update the file path to the target file
             else if (event.type == sf::Event::TextEntered) 
             {
                 if (std::isprint(event.text.unicode))
@@ -103,6 +105,7 @@ int main()
                     path_box.setString(file_path);
                 }
             }
+            // If the user presses an arrow key, responsd to the direction by selecting the appropriate input database
             else if (event.type == sf::Event::KeyPressed) 
             {
       	        if (event.key.code == sf::Keyboard::Up) 
@@ -161,53 +164,47 @@ int main()
                         path_box.setString(input_text);
                     }
                 }
+                // If the user presses enter, begin the main PCADA application
                 if (event.key.code == sf::Keyboard::Return) 
                 {
                     if (!file_path.empty()) 
                     {
                         ifstream (file_path, std::ifstream::in);
-                        //cout << file_path << endl;
                         path_box.setString("GENERATING CONFIG FILES...");
                         window.draw(path_box);
+
+                        // Run the configuration_manager.py script, generating the config files
                         system("python3 config_manager.py");
 
+                        // For each config file, execute the example Repp command using the selected database, 
+                        // user-input DNA sequence, and current config file
                         for (int i = 0; i < NUM_COMPANIES; i++)
                         {
                             string repp_string = "repp make seq -i " + file_path + " -o output" + std::to_string(i+1) + ".json" + " --" + selectedDB + " --settings " + "config" + std::to_string(i+1) + ".yaml -v";
                             system(repp_string.c_str());
                         }
 
+                        // Once all of the Repp calls are complete, calculate the primerscore - for now, just print to terminal
                         for (int i = 0; i < NUM_COMPANIES; i++)
                         {
                             string score_string = "python3 primerscore.py output" + std::to_string(i+1) + ".json";
                             system(score_string.c_str());
                         }
 
+                        // Generate visualizations of the Repp-compliant design for each of the input configuration files
                         for (int i = 0; i < NUM_COMPANIES; i++)
                         {
                             string vis_string = "python3 visualizer.py output" + std::to_string(i+1) + ".json";
                             system(vis_string.c_str());
 
                         }
-
-                        
-                        //system("repp make seq -i As0.input.fa -o As0.output.json --addgene --settings twist.yaml -v");
+                        // Update the text box letting the user know the program is complete
                         path_box.setString("BUILD COMPLETE, CHECK OUTPUT FILES");
-                        
-                        //window.close()
-
                     }
                 }
             }
-      //if (event.type == sf::Event::MouseButtonPressed){
-      //   double x = event.mouseButton.x;
-      //   double y = event.mouseButton.y;
-      //   if (x >= 350 && x <= 460) {
-      //     if (y >= 600 && y <=650) {
-      //         window.close();
-      //     }
-      //   }
         }
+        // Draw all of the shapes!
         window.clear();
         window.draw(Addgene);
         window.draw(DNASU);

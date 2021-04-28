@@ -21,11 +21,13 @@ strand_list =[]
 label_list=[]
 color_list = ["#DFFF00", "#6495ED", "#FFBF00", "#40E0D0", "#FF7F50", "#9FE2BF", "#DE3163", "#CCCCFF", "#800080", "#008080", "#00FF00", "#00FFFF", "#000080"]
 
+# For each fragment
 for i in range(len(frag)):
     fragment = frag[i]
     substring = Seq(fragment['seq'])
     start_list.append(seq.find(substring[:40]))
     end_index = seq.find(substring[:40])+len(substring)
+    # Make sure the sequences are aligned properly - sometimes they could wrap around each other since this is a circular plasmid
     if end_index < len(seq):
         end_list.append(end_index)
     else:
@@ -41,10 +43,13 @@ for i in range(len(start_list)):
     if start_list[i] > end_list[i]:
         start_list[i] = start_list[i] - len(seq)
 
+# Build the list of features
 features1 = [GraphicFeature(start = start_list[i], end = end_list[i], strand = +1, color = color_list[i], label = label_list[i]) for i in range(len(frag))]
 
+# Create the record
 record = CircularGraphicRecord(sequence_length = len(seq), features = features1)
 
+# Plot the record and save it to disk
 record.plot(figure_width=10)
 ax, _ = record.plot(figure_width=5)
 ax.figure.savefig(filename + "_vis.png", bbox_inches="tight")
